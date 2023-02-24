@@ -169,6 +169,7 @@ class EnergyLoss {
 public:
     EnergyLoss();
     EnergyLoss(const char*);
+    EnergyLoss(const char*, const char*);
     EnergyLoss(const char*, double);
     EnergyLoss(const char*, bool);
     EnergyLoss(const char*, double , bool);
@@ -206,6 +207,7 @@ public:
 private:
     bool debug = false;
     bool calcRangeDebug = false;
+    const char *energyLossDatFile;
 
     void ReadFile(const char*);
     void ReadFileSimple(const char*, double);
@@ -255,6 +257,12 @@ inline EnergyLoss::EnergyLoss() {
 
 inline EnergyLoss::EnergyLoss(const char* srimFile) {
     debug = false;
+    ReadFile(srimFile);
+}
+
+inline EnergyLoss::EnergyLoss(const char* srimFile, const char *datFile) {
+    debug = false;
+    energyLossDatFile = datFile;
     ReadFile(srimFile);
 }
 
@@ -803,7 +811,10 @@ inline double EnergyLoss::CalcRangeGL1024(double a, double b) {
 }
 
 inline void EnergyLoss::ReadInitParams() {
-    std::ifstream inFile("EnergyLoss.dat", std::ios::in | std::ifstream::binary);
+    if (energyLossDatFile != nullptr && strlen(energyLossDatFile) == 0){
+        energyLossDatFile = "EnergyLoss.dat";
+    }
+    std::ifstream inFile(energyLossDatFile, std::ios::in | std::ifstream::binary);
     ASSERT_WITH_MESSAGE_EL(inFile.is_open(), "Cannot find EnergyLoss.dat file!\n");
 
     inFile.read(reinterpret_cast<char*> (x16), sizeof(x16));
