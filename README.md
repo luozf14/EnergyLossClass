@@ -13,10 +13,15 @@ git clone https://github.com/joshhooker/EnergyLossClass.git
 Include EnergyLoss.h into your C++ program.
 
 ## Initializing an Energy Loss Class
+The Energy Loss Class needs the binary file ``EnergyLoss.dat``, which is attached with this repo. By default it looks for ``EnergyLoss.dat`` in the directory where your program runs.
 
 For an unedited SRIM file, we can initialize the Energy Loss Class by for example:
 ```c++
 EnergyLoss* carbon = new EnergyLoss("CarbonCsI");
+```
+In case you want to specify the location of the ``EnergyLoss.dat`` (e.g., when you use PROOF or other sandbox-like tool), you can initialize the Energy Loss Class in this way:
+```C++
+EnergyLoss* carbon = new EnergyLoss("CarbonCsI","/path-to/EnergyLoss.dat");
 ```
 
 For a given SRIM file of just the table and a conversion factor, we initialize the Energy Loss Class by:
